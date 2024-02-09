@@ -1,4 +1,52 @@
-import { galleryItems } from './gallery-items.js';
-// Change code below this line
+import { galleryItems } from "./gallery-items.js";
+const gallery = document.querySelector(".gallery");
 
-console.log(galleryItems);
+galleryItems.forEach((item) => {
+  const { preview, original, description } = item;
+  const galleryItem = document.createElement("li");
+  galleryItem.classList.add("gallery__item");
+
+  const link = document.createElement("a");
+  link.classList.add("gallery__link");
+  link.href = original;
+  link.addEventListener("click", openImg);
+
+  const img = document.createElement("img");
+  img.classList.add("gallery__image");
+  img.src = preview;
+  img.dataset.source = original;
+  img.alt = description;
+
+  galleryItem.appendChild(link);
+  link.appendChild(img);
+
+  gallery.append(galleryItem);
+
+  console.log(galleryItem);
+});
+
+function openImg(event) {
+  event.preventDefault();
+  const instance = basicLightbox.create(
+    `<img src="${event.target.dataset.source}">`,
+    {
+      onShow: handleShow,
+      onClose: handleClose,
+    }
+  );
+  instance.show();
+
+  function handleShow() {
+    document.addEventListener("keydown", handleKeyPress);
+  }
+
+  function handleClose() {
+    document.removeEventListener("keydown", handleKeyPress);
+  }
+
+  function handleKeyPress(event) {
+    if (event.code === "Escape") {
+      instance.close();
+    }
+  }
+}
