@@ -1,8 +1,7 @@
 import { galleryItems } from "./gallery-items.js";
 const gallery = document.querySelector(".gallery");
 
-galleryItems.forEach((item) => {
-  const { preview, original, description } = item;
+galleryItems.forEach(({ preview, original, description }) => {
   const galleryItem = document.createElement("li");
   galleryItem.classList.add("gallery__item");
 
@@ -30,19 +29,11 @@ function openImg(event) {
   const instance = basicLightbox.create(
     `<img src="${event.target.dataset.source}">`,
     {
-      onShow: handleShow,
-      onClose: handleClose,
+      onShow: () => document.addEventListener("keydown", handleKeyPress),
+      onClose: () => document.removeEventListener("keydown", handleKeyPress),
     }
   );
   instance.show();
-
-  function handleShow() {
-    document.addEventListener("keydown", handleKeyPress);
-  }
-
-  function handleClose() {
-    document.removeEventListener("keydown", handleKeyPress);
-  }
 
   function handleKeyPress(event) {
     if (event.code === "Escape") {
