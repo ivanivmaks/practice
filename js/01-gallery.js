@@ -20,8 +20,6 @@ galleryItems.forEach(({ preview, original, description }) => {
   link.appendChild(img);
 
   gallery.append(galleryItem);
-
-  console.log(galleryItem);
 });
 
 function openImg(event) {
